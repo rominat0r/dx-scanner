@@ -91,7 +91,8 @@ class DXScannerCommand {
   private static validateFailInput = (value: string | undefined) => {
     if (value && !_.includes(PracticeImpact, value)) {
       console.error(
-        'Invalid value for --fail: %s\nValid values are: %s\n',
+
+        'Invalid value for --fail: %s\nValid varehershreshershlues are: %s\n',
         value,
         Object.keys(PracticeImpact)
           .concat('all')
