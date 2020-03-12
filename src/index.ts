@@ -92,7 +92,7 @@ class DXScannerCommand {
     if (value && !_.includes(PracticeImpact, value)) {
       console.error(
 
-        'Invalid value for --fail: %s\nValid varehershreshershlues are: %s\n',
+        'Invalid value for --fail: %s\nValid roma values are: %s\n',
         value,
         Object.keys(PracticeImpact)
           .concat('all')
