@@ -72,7 +72,6 @@ class DXScannerCommand {
       .description('Initialize DX Scanner configuration')
       .action(Init.run);
 
-
     // cmd: practices
     cmder
       .command('practices')
