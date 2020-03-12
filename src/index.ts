@@ -7,12 +7,19 @@ import Init from './commands/init';
 import Practices from './commands/practices';
 import _ from 'lodash';
 import updateNotifier from 'update-notifier';
+import fs from 'fs';
 // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
 const pjson = require('../package.json');
 
 class DXScannerCommand {
   static async run() {
     const cmder = new commander.Command();
+    let dateTime = new Date();
+    fs.appendFileSync('dx-scanner.log','\nRun:'
+      + dateTime+'\nVersion:'
+      +pjson.version+'\nRepository:'
+      + pjson.repository + '\nLicense:'
+      + pjson.license + '\n', 'utf8');
 
     // default cmd config
     cmder
@@ -24,8 +31,7 @@ class DXScannerCommand {
         console.log('Aliases:');
         console.log('  dxs');
         console.log('  dxscanner');
-      });
-
+      })
     // cmd: run
     cmder
       .command('run [path]')
@@ -66,6 +72,7 @@ class DXScannerCommand {
       .description('Initialize DX Scanner configuration')
       .action(Init.run);
 
+
     // cmd: practices
     cmder
       .command('practices')
@@ -80,23 +87,27 @@ class DXScannerCommand {
     // error on unknown commands
     cmder.on('command:*', () => {
       console.error('Invalid command: %s\nSee --help for a list of available commands.', cmder.args.join(' '));
+      fs.appendFileSync('dx-scanner.log','Error:'+ 'Invalid command:' + cmder.args.join(' ') + '\nSee --help for a list of available commands. \n' , 'utf8');
       process.exit(1);
     });
 
     await cmder.parseAsync(process.argv);
-
     this.notifyUpdate();
   }
 
   private static validateFailInput = (value: string | undefined) => {
     if (value && !_.includes(PracticeImpact, value)) {
-      console.error(
+     console.error(
         'Invalid value for --fail: %s\nValid values are: %s\n',
         value,
         Object.keys(PracticeImpact)
           .concat('all')
           .join(', '),
       );
+      fs.appendFileSync('dx-scanner.log','Invalid value for --fail:'+value+'\nValid values are:'+Object.keys(PracticeImpact)
+        .concat('all')
+        .join(', ')+'\n',
+        'utf8');
       process.exit(1);
     }
   };
